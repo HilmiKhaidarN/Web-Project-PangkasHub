@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registrasi - PangkasHub</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="container login-container">
+    <header>
+      <h1><i class="fas fa-user-plus"></i> Registrasi</h1>
+      <p>Buat akun untuk booking lebih mudah</p>
+    </header>
+
+    <main>
+      <form id="registerForm" class="login-form">
+        <div class="form-group">
+          <label for="name">Nama Lengkap *</label>
+          <input type="text" id="name" required>
+        </div>
+
+        <div class="form-group">
+          <label for="phone">No. Telepon *</label>
+          <input type="tel" id="phone" required placeholder="08xxxxxxxxxx">
+          <small>Nomor ini akan digunakan untuk login</small>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email (Opsional)</label>
+          <input type="email" id="email" placeholder="email@example.com">
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password *</label>
+          <input type="password" id="password" required minlength="6">
+          <small>Minimal 6 karakter</small>
+        </div>
+
+        <div class="form-group">
+          <label for="confirmPassword">Konfirmasi Password *</label>
+          <input type="password" id="confirmPassword" required minlength="6">
+        </div>
+
+        <button type="submit" class="btn btn-primary" id="registerBtn">
+          <span id="btnText">Daftar</span>
+          <span id="btnLoader" class="loader" style="display: none;"></span>
+        </button>
+
+        <div id="message" class="message" style="display: none;"></div>
+      </form>
+
+      <div class="login-footer">
+        <p>Sudah punya akun? <a href="/customer-login">Login di sini</a></p>
+      </div>
+    </main>
+
+    <footer class="app-footer">
+      <p class="copyright">© 2025 PangkasHub - Developed by hello-hilmi</p>
+      <p class="warning">⚠️ Data Anda akan kami jaga kerahasiaannya sesuai kebijakan privasi</p>
+    </footer>
+  </div>
+
+  <script src="js/register.js"></script>
+</body>
+</html>

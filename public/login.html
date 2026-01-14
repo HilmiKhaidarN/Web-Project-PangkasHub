@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Admin - PangkasHub</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="container login-container">
+    <header>
+      <h1><i class="fas fa-lock"></i> Login Admin</h1>
+      <p>Dashboard Admin PangkasHub</p>
+    </header>
+
+    <main>
+      <form id="loginForm" class="login-form">
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" id="username" required autocomplete="username">
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" required autocomplete="current-password">
+        </div>
+
+        <button type="submit" class="btn btn-primary" id="loginBtn">
+          <span id="btnText">Login</span>
+          <span id="btnLoader" class="loader" style="display: none;"></span>
+        </button>
+
+        <div id="message" class="message" style="display: none;"></div>
+      </form>
+    </main>
+
+    <footer class="app-footer">
+      <p class="copyright">© 2025 PangkasHub - Developed by hello-hilmi</p>
+      <p class="warning">⚠️ Jangan gunakan password yang sama dengan akun penting lainnya</p>
+    </footer>
+  </div>
+
+  <script src="js/login.js"></script>
+</body>
+</html>

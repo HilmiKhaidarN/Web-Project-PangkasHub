@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - PangkasHub</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    body {
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    body.loaded {
+      opacity: 1;
+    }
+    .notification-badge {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+      color: white;
+      padding: 16px 24px;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(255, 107, 107, 0.4);
+      z-index: 1000;
+      animation: slideInRight 0.5s ease, pulse 2s ease infinite;
+      max-width: 350px;
+    }
+    @keyframes slideInRight {
+      from { transform: translateX(400px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    .notification-badge strong {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 16px;
+    }
+    .notification-badge small {
+      color: rgba(255,255,255,0.9);
+      font-size: 13px;
+    }
+    .live-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.2);
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 13px;
+      margin-left: 10px;
+    }
+    .live-dot {
+      width: 8px;
+      height: 8px;
+      background: #4ade80;
+      border-radius: 50%;
+      animation: blink 1.5s ease infinite;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+  </style>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    // Cek auth sebelum halaman dimuat
+    (async function() {
+      try {
+        const response = await fetch('/api/auth/check');
+        const result = await response.json();
+        
+        if (!result.success || !result.authenticated) {
+          window.location.replace('/login');
+        } else {
+          // Tampilkan halaman setelah auth berhasil
+          if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+              document.body.classList.add('loaded');
+            });
+          } else {
+            document.body.classList.add('loaded');
+          }
+        }
+      } catch (error) {
+        window.location.replace('/login');
+      }
+    })();
+  </script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1><i class="fas fa-chart-line"></i> Dashboard Admin</h1>
+      <p>Kelola Booking PangkasHub
+        <span class="live-indicator">
+          <span class="live-dot"></span>
+          <span>LIVE</span>
+        </span>
+      </p>
+    </header>
+
+    <main>
+      <div class="admin-nav">
+        <a href="/admin/all-bookings" class="btn-nav"><i class="fas fa-calendar-alt"></i> Semua Booking</a>
+        <a href="/admin/manage-barbers" class="btn-nav"><i class="fas fa-users"></i> Kelola Barber</a>
+        <a href="/admin/manage-services" class="btn-nav"><i class="fas fa-cut"></i> Kelola Layanan</a>
+      </div>
+
+      <div class="filter-section">
+        <h2>Filter Booking</h2>
+        <div class="filter-form">
+          <div class="form-group">
+            <label for="filterDate">Tanggal</label>
+            <input type="date" id="filterDate">
+          </div>
+
+          <div class="form-group">
+            <label for="filterBarber">Barber</label>
+            <select id="filterBarber">
+              <option value="">Semua Barber</option>
+            </select>
+          </div>
+
+          <button class="btn btn-primary" id="filterBtn">Tampilkan</button>
+          <button class="btn btn-secondary" id="resetBtn">Reset</button>
+        </div>
+      </div>
+
+      <div id="loadingIndicator" class="loading" style="display: none;">
+        <div class="loader"></div>
+        <p>Memuat data...</p>
+      </div>
+
+      <div id="bookingList" class="booking-list"></div>
+    </main>
+
+    <footer class="app-footer">
+      <p class="copyright">© 2025 PangkasHub - Developed by hello-hilmi</p>
+      <p class="warning">⚠️ Admin: Jaga kerahasiaan data customer</p>
+    </footer>
+  </div>
+
+  <script src="js/admin.js"></script>
+</body>
+</html>

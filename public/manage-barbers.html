@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kelola Barber - PangkasHub</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    body { opacity: 0; transition: opacity 0.3s; }
+    body.loaded { opacity: 1; }
+  </style>
+  <script>
+    (async function() {
+      try {
+        const response = await fetch('/api/auth/check');
+        const result = await response.json();
+        if (!result.success || !result.authenticated) {
+          window.location.replace('/login');
+        } else {
+          if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => { document.body.classList.add('loaded'); });
+          } else {
+            document.body.classList.add('loaded');
+          }
+        }
+      } catch (error) {
+        window.location.replace('/login');
+      }
+    })();
+  </script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1><i class="fas fa-users"></i> Kelola Barber</h1>
+      <p>Tambah, edit, dan hapus barber</p>
+    </header>
+    <main>
+      <div class="admin-nav">
+        <a href="/admin" class="btn-nav"><i class="fas fa-arrow-left"></i> Dashboard</a>
+        <a href="/admin/all-bookings" class="btn-nav"><i class="fas fa-calendar-alt"></i> Semua Booking</a>
+        <a href="/admin/manage-services" class="btn-nav"><i class="fas fa-cut"></i> Kelola Layanan</a>
+      </div>
+      <div class="manage-container">
+        <div class="form-card">
+          <h3 id="formTitle">Tambah Barber Baru</h3>
+          <form id="barberForm">
+            <input type="hidden" id="barberId">
+            <div class="form-group">
+              <label for="barberName">Nama *</label>
+              <input type="text" id="barberName" required>
+            </div>
+            <div class="form-group">
+              <label for="barberPhone">No. Telepon *</label>
+              <input type="tel" id="barberPhone" required>
+            </div>
+            <button type="submit" class="btn btn-primary" id="submitBtn">Simpan</button>
+            <button type="button" class="btn btn-secondary" id="cancelBtn" style="display:none;" onclick="resetForm()">Batal</button>
+          </form>
+        </div>
+        <div class="list-card">
+          <h3>Daftar Barber</h3>
+          <div id="barberList"></div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="app-footer">
+      <p class="copyright">© 2025 PangkasHub - Developed by hello-hilmi</p>
+      <p class="warning">⚠️ Admin: Update data barber secara berkala</p>
+    </footer>
+  </div>
+  <script src="/js/manage-barbers.js"></script>
+</body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PangkasHub - Booking Online</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    body {
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    body.loaded {
+      opacity: 1;
+    }
+  </style>
+  <script>
+    // Cek auth sebelum halaman dimuat
+    (async function() {
+      try {
+        const response = await fetch('/api/customer-auth/check');
+        const result = await response.json();
+        
+        if (!result.success || !result.authenticated) {
+          window.location.replace('/customer-login?redirect=booking');
+        } else {
+          // Tampilkan halaman setelah auth berhasil
+          if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+              document.body.classList.add('loaded');
+            });
+          } else {
+            document.body.classList.add('loaded');
+          }
+        }
+      } catch (error) {
+        window.location.replace('/customer-login?redirect=booking');
+      }
+    })();
+  </script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1><i class="fas fa-cut"></i> PangkasHub</h1>
+      <p>Booking Online Barbershop</p>
+    </header>
+
+    <main>
+      <form id="bookingForm">
+        <div class="form-group">
+          <label for="customerName">Nama Lengkap *</label>
+          <input type="text" id="customerName" required readonly>
+        </div>
+
+        <div class="form-group">
+          <label for="customerPhone">No. Telepon *</label>
+          <input type="tel" id="customerPhone" required placeholder="08xxxxxxxxxx" readonly>
+        </div>
+
+        <div class="form-group">
+          <label for="service">Pilih Layanan *</label>
+          <select id="service" required>
+            <option value="">-- Pilih Layanan --</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="barber">Pilih Barber (Opsional)</label>
+          <select id="barber">
+            <option value="">-- Pilih Barber atau Acak --</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="bookingDate">Tanggal *</label>
+          <input type="date" id="bookingDate" required>
+        </div>
+
+        <div class="form-group">
+          <label>Pilih Waktu *</label>
+          <div id="timeSlots" class="time-slots">
+            <p class="text-muted">Pilih tanggal terlebih dahulu</p>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="notes">Catatan (Opsional)</label>
+          <textarea id="notes" rows="3" placeholder="Tambahkan catatan khusus..."></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary" id="submitBtn">
+          <span id="btnText">Buat Booking</span>
+          <span id="btnLoader" class="loader" style="display: none;"></span>
+        </button>
+      </form>
+
+      <div id="message" class="message" style="display: none;"></div>
+    </main>
+
+    <footer class="app-footer">
+      <p class="copyright">© 2025 PangkasHub - Developed by hello-hilmi</p>
+      <p class="warning">⚠️ Untuk keamanan, jangan bagikan informasi login Anda kepada siapapun</p>
+    </footer>
+  </div>
+
+  <script src="js/booking.js"></script>
+</body>
+</html>
