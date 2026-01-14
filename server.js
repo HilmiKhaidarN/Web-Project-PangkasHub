@@ -2,8 +2,10 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const session = require('express-session');
+const MySQLStore = require('express-mysql-session')(session);
 const http = require('http');
 const socketIo = require('socket.io');
+const db = require('./config/database');
 require('dotenv').config();
 
 const serviceRoutes = require('./routes/serviceRoutes');
@@ -40,8 +42,25 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Session middleware
+const sessionStore = new MySQLStore({
+  clearExpired: true,
+  checkExpirationInterval: 900000, // 15 minutes
+  expiration: 86400000, // 24 hours
+  createDatabaseTable: true,
+  schema: {
+    tableName: 'sessions',
+    columnNames: {
+      session_id: 'session_id',
+      expires: 'expires',
+      data: 'data'
+    }
+  }
+}, db.pool);
+
 app.use(session({
+  key: 'pangkashub_session',
   secret: process.env.SESSION_SECRET || 'pangkashub-secret-key-change-in-production',
+  store: sessionStore,
   resave: false,
   saveUninitialized: false,
   cookie: {
